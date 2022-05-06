@@ -14,7 +14,7 @@ class Feedback extends Component {
     neutral: PropsType.number.isRequired,
     bad: PropsType.number.isRequired,
     total: PropsType.number.isRequired,
-    // positivePercentage: PropsType.number.isRequired,
+    positivePercentage: PropsType.number.isRequired,
   };
 
   state = {
@@ -22,31 +22,38 @@ class Feedback extends Component {
     neutral: this.props.initialValue,
     bad: this.props.initialValue,
     total: this.props.initialValue,
+    positivePercentage: this.props.initialValue,
   };
 
   handleGood = () => {
     this.setState(prevState => ({
       good: prevState.good + 1,
-      total: prevState.total + 1,
     }));
   };
 
   handleNeutral = () => {
     this.setState(prevState => ({
       neutral: prevState.neutral + 1,
-      total: prevState.total + 1,
     }));
   };
 
   handleBad = () => {
     this.setState(prevState => ({
       bad: prevState.bad + 1,
-      total: prevState.total + 1,
     }));
   };
 
   render() {
-    const { good, neutral, bad, total } = this.state;
+    const { good, neutral, bad } = this.state;
+
+    const totalFeedback = () => {
+      return good + neutral + bad;
+    };
+
+    const positivePercentage = () => {
+      if (totalFeedback()) return Math.floor((good * 100) / totalFeedback());
+      return 0;
+    };
 
     return (
       <div className="Feedback">
@@ -56,7 +63,13 @@ class Feedback extends Component {
           onNeutral={this.handleNeutral}
           onBad={this.handleBad}
         />
-        <Statistics good={good} neutral={neutral} bad={bad} total={total} />
+        <Statistics
+          good={good}
+          neutral={neutral}
+          bad={bad}
+          total={totalFeedback()}
+          positivePercentage={positivePercentage()}
+        />
       </div>
     );
   }
