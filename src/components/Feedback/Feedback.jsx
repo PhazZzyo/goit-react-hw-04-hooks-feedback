@@ -63,13 +63,18 @@ class Feedback extends Component {
           onNeutral={this.handleNeutral}
           onBad={this.handleBad}
         />
-        <Statistics
-          good={good}
-          neutral={neutral}
-          bad={bad}
-          total={totalFeedback()}
-          positivePercentage={positivePercentage()}
-        />
+        <h2>Statistics</h2>
+        {totalFeedback() ? (
+          <Statistics
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            total={totalFeedback()}
+            positivePercentage={positivePercentage()}
+          />
+        ) : (
+          <p>No feedback given</p>
+        )}
       </div>
     );
   }
